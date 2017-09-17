@@ -7,14 +7,14 @@ namespace LetsCatalog.Migrations
     using System.Data.Entity.Migrations;
     using System.Linq;
 
-    internal sealed class Configuration : DbMigrationsConfiguration<LetsCatalog.Models.CatalogDb>
+    internal sealed class Configuration : DbMigrationsConfiguration<LetsCatalog.Infrastructure.CatalogDb>
     {
         public Configuration()
         {
             AutomaticMigrationsEnabled = false;
         }
 
-        protected override void Seed(LetsCatalog.Models.CatalogDb context)
+        protected override void Seed(LetsCatalog.Infrastructure.CatalogDb context)
         {
             var user = new User { User_Id = 1, Name = "Ahmed", Email = "abc@gmail.com" };
             var cat = new Category { Category_Id = 1, Name = "Electronics", Created_Date = DateTime.Now, User = user, User_Id = user.User_Id };

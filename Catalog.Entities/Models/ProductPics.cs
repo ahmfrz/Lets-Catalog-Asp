@@ -29,12 +29,14 @@ namespace Catalog.Models.Entities
         /// The product id foreign key of the product picture
         /// </summary>
         [Required]
+        [ScaffoldColumn(false)]
         public int Product_Id { get; set; }
 
         /// <summary>
         /// The product of the product picture
         /// </summary>
         [Required]
+        [ScaffoldColumn(false)]
         public Product Product { get; set; }
     }
 }

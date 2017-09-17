@@ -35,18 +35,21 @@ namespace Catalog.Models.Entities
         /// </summary>
         [Required]
         [DataType(DataType.Date)]
+        [ScaffoldColumn(false)]
         public DateTime Created_Date { get; set; }
 
         /// <summary>
         /// The category id foreign key of the subcategory
         /// </summary>
         [Required]
+        [ScaffoldColumn(false)]
         public int Category_Id { get; set; }
 
         /// <summary>
         /// The category of the subcategory
         /// </summary>
         [Required]
+        [ScaffoldColumn(false)]
         public Category Category { get; set; }
     }
 }

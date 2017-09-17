@@ -36,12 +36,14 @@ namespace Catalog.Models.Entities
         /// </summary>
         [Required]
         [DataType(DataType.Date)]
+        [ScaffoldColumn(false)]
         public DateTime Created_Date { get; set; }
 
         /// <summary>
         /// The subcategory id foreign key of the product
         /// </summary>
         [Required]
+        [ScaffoldColumn(false)]
         public int SubCategory_Id { get; set; }
 
         /// <summary>
@@ -54,6 +56,7 @@ namespace Catalog.Models.Entities
         /// The brand id foreign key of the product
         /// </summary>
         [Required]
+        [ScaffoldColumn(false)]
         public int Brand_Id { get; set; }
 
         /// <summary>

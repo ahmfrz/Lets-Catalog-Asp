@@ -30,6 +30,7 @@ namespace Catalog.Models.Entities
         /// </summary>
         [Required]
         [DataType(DataType.Date)]
+        [ScaffoldColumn(false)]
         public DateTime Created_Date { get; set; }
 
         /// <summary>
@@ -42,6 +43,7 @@ namespace Catalog.Models.Entities
         /// The subcategory of the brand
         /// </summary>
         [Required]
+        [ScaffoldColumn(false)]
         public SubCategory SubCategory { get; set; }
     }
 }
