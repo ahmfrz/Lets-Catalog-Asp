@@ -6,13 +6,20 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Catalog.Entities.Repository
+namespace LetsCatalog.Models
 {
     /// <summary>
     /// The Catalog repository class
     /// </summary>
     public class CatalogDb: DbContext
     {
+        /// <summary>
+        /// Creates a new instance of CatalogDb class
+        /// </summary>
+        //public CatalogDb():base("DefaultConnection")
+        //{
+
+        //}
         /// <summary>
         /// The catalog brands table
         /// </summary>

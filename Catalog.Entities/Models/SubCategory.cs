@@ -15,6 +15,7 @@ namespace Catalog.Models.Entities
         /// <summary>
         /// The primary key of the subcategory
         /// </summary>
+        [Key]
         public int SubCateogy_Id { get; set; }
 
         /// <summary>
@@ -47,17 +48,5 @@ namespace Catalog.Models.Entities
         /// </summary>
         [Required]
         public Category Category { get; set; }
-
-        /// <summary>
-        /// The user id foreign key of the subcategory
-        /// </summary>
-        [Required]
-        public int User_Id { get; set; }
-
-        /// <summary>
-        /// The user who created the subcategory
-        /// </summary>
-        [Required]
-        public User User { get; set; }
     }
 }

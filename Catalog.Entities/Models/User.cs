@@ -15,6 +15,7 @@ namespace Catalog.Models.Entities
         /// <summary>
         /// The primary key of the user
         /// </summary>
+        [Key]
         public int User_Id { get; set; }
 
         /// <summary>

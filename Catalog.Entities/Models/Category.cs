@@ -15,6 +15,7 @@ namespace Catalog.Models.Entities
         /// <summary>
         /// The primary key of the category
         /// </summary>
+        [Key]
         public int Category_Id { get; set; }
 
         /// <summary>

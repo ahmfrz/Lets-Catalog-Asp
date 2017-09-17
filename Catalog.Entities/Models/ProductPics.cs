@@ -15,6 +15,7 @@ namespace Catalog.Models.Entities
         /// <summary>
         /// The primary key of the product picture
         /// </summary>
+        [Key]
         public int Picture_id { get; set; }
 
         /// <summary>

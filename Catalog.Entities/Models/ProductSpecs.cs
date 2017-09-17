@@ -16,6 +16,7 @@ namespace Catalog.Models.Entities
         /// <summary>
         /// The primary key of product specification
         /// </summary>
+        [Key]
         public int Spec_Id { get; set; }
 
         /// <summary>

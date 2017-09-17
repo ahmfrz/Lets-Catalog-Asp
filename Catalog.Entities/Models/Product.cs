@@ -15,6 +15,7 @@ namespace Catalog.Models.Entities
         /// <summary>
         /// The primary key of the product
         /// </summary>
+        [Key]
         public int Product_Id { get; set; }
 
         /// <summary>
@@ -53,24 +54,12 @@ namespace Catalog.Models.Entities
         /// The brand id foreign key of the product
         /// </summary>
         [Required]
-        public int BrandId { get; set; }
+        public int Brand_Id { get; set; }
 
         /// <summary>
         /// The brand of the product
         /// </summary>
         [Required]
         public Brand Brand { get; set; }
-
-        /// <summary>
-        /// The user id foreign key of the product
-        /// </summary>
-        [Required]
-        public int User_Id { get; set; }
-
-        /// <summary>
-        /// The user who created the product
-        /// </summary>
-        [Required]
-        public User User { get; set; }
     }
 }
