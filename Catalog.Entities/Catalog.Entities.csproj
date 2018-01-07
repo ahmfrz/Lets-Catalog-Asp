@@ -52,9 +52,9 @@
     <Compile Include="GenericRepository.cs" />
     <Compile Include="CatalogContext.cs" />
     <Compile Include="IUnitOfWork.cs" />
-    <Compile Include="Migrations\201801070720255_initial.cs" />
-    <Compile Include="Migrations\201801070720255_initial.Designer.cs">
-      <DependentUpon>201801070720255_initial.cs</DependentUpon>
+    <Compile Include="Migrations\201801070734273_collection_update.cs" />
+    <Compile Include="Migrations\201801070734273_collection_update.Designer.cs">
+      <DependentUpon>201801070734273_collection_update.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="UnitOfWork.cs" />
@@ -78,8 +78,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201801070720255_initial.resx">
-      <DependentUpon>201801070720255_initial.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201801070734273_collection_update.resx">
+      <DependentUpon>201801070734273_collection_update.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

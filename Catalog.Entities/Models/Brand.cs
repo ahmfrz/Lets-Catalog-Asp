@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,7 +17,7 @@ namespace Catalog.Models.Entities
         /// The primary key of the brand
         /// </summary>
         [Key]
-        public int Brand_Id { get; set; }
+        public int ID { get; set; }
 
         /// <summary>
         /// The name of the brand
@@ -33,17 +34,17 @@ namespace Catalog.Models.Entities
         [ScaffoldColumn(false)]
         public DateTime Created_Date { get; set; }
 
-        /// <summary>
-        /// The subcategory id foreign key of the brand
-        /// </summary>
-        [Required]
-        public int SubCategory_Id { get; set; }
+        ///// <summary>
+        ///// The subcategory id foreign key of the brand
+        ///// </summary>
+        //[Required]
+        //public int SubCategory_Id { get; set; }
 
-        /// <summary>
-        /// The subcategory of the brand
-        /// </summary>
-        [Required]
-        [ScaffoldColumn(false)]
-        public SubCategory SubCategory { get; set; }
+        ///// <summary>
+        ///// The subcategory of the brand
+        ///// </summary>
+        //[Required]
+        //[ScaffoldColumn(false)]
+        //public SubCategory SubCategory { get; set; }
     }
 }

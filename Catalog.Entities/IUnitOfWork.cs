@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Catalog.Entities
 {
-    public interface IUnitOfWork
+    public interface IUnitOfWork:IDisposable
     {
         GenericRepository<Category> CategoryRepository { get; }
         GenericRepository<SubCategory> SubCategoryRepository { get; }

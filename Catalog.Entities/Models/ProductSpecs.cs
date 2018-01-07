@@ -17,25 +17,25 @@ namespace Catalog.Models.Entities
         /// The primary key of product specification
         /// </summary>
         [Key]
-        public int Spec_Id { get; set; }
+        public int ID { get; set; }
 
         /// <summary>
         /// The color of the product
         /// </summary>
         public Colors Color { get; set; }
 
-        /// <summary>
-        /// The foreign key of the product specification
-        /// </summary>
-        [Required]
-        [ScaffoldColumn(false)]
-        public int Product_Id { get; set; }
+        ///// <summary>
+        ///// The foreign key of the product specification
+        ///// </summary>
+        //[Required]
+        //[ScaffoldColumn(false)]
+        //public int Product_Id { get; set; }
 
-        /// <summary>
-        /// The product of the product specification
-        /// </summary>
-        [Required]
-        [ScaffoldColumn(false)]
-        public Product Product { get; set; }
+        ///// <summary>
+        ///// The product of the product specification
+        ///// </summary>
+        //[Required]
+        //[ScaffoldColumn(false)]
+        //public Product Product { get; set; }
     }
 }

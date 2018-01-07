@@ -10,7 +10,7 @@ namespace Catalog.Entities
     /// <summary>
     /// The catalog data source
     /// </summary>
-    public class UnitOfWork : IUnitOfWork, IDisposable
+    public class UnitOfWork : IUnitOfWork
     {
         #region Private Members
         /// <summary>

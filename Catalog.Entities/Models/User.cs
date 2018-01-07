@@ -16,7 +16,7 @@ namespace Catalog.Models.Entities
         /// The primary key of the user
         /// </summary>
         [Key]
-        public int User_Id { get; set; }
+        public int ID { get; set; }
 
         /// <summary>
         /// The name of the user
@@ -39,5 +39,10 @@ namespace Catalog.Models.Entities
         [Display(Name="Picture URL")]
         [DataType(DataType.ImageUrl)]
         public string Picture_URL { get; set; }
+
+        /// <summary>
+        ///
+        /// </summary>
+        public virtual ICollection<Category> Categories { get; set; }
     }
 }

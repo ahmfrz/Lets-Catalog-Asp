@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,7 +17,7 @@ namespace Catalog.Models.Entities
         /// The primary key of the category
         /// </summary>
         [Key]
-        public int Category_Id { get; set; }
+        public int ID { get; set; }
 
         /// <summary>
         /// The name of the category
@@ -35,17 +36,22 @@ namespace Catalog.Models.Entities
         public DateTime Created_Date { get; set; }
 
         /// <summary>
-        /// The user id foreign key of the category
+        ///
         /// </summary>
-        [Required]
-        [ScaffoldColumn(false)]
-        public int User_Id { get; set; }
+        public virtual ICollection<SubCategory> SubCategories { get; set; }
 
-        /// <summary>
-        /// The user who created the category
-        /// </summary>
-        [Required]
-        [ScaffoldColumn(false)]
-        public User User { get; set; }
+        ///// <summary>
+        ///// The user id foreign key of the category
+        ///// </summary>
+        //[Required]
+        //[ScaffoldColumn(false)]
+        //public int User_Id { get; set; }
+
+        ///// <summary>
+        ///// The user who created the category
+        ///// </summary>
+        //[Required]
+        //[ScaffoldColumn(false)]
+        //public User User { get; set; }
     }
 }
