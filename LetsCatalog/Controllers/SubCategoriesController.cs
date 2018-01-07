@@ -71,6 +71,8 @@ namespace LetsCatalog.Controllers
         /// <returns></returns>
         public ActionResult Create(int? categoryId)
         {
+            TempData["CurrentCategory"] = unitOfWork.CategoryRepository.GetByID(categoryId);
+            TempData["Categories"] = unitOfWork.CategoryRepository.Get();
             return View();
         }
 
@@ -81,16 +83,21 @@ namespace LetsCatalog.Controllers
         /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ID,Name,Description,Created_Date")] SubCategory subCategory)
+        public ActionResult Create([Bind(Include = "ID,Name,Description,Created_Date")] SubCategory subCategory, string categoriesList)
         {
             try
             {
                 if (ModelState.IsValid)
                 {
-                    subCategory.Created_Date = DateTime.Now;
-                    unitOfWork.SubCategoryRepository.Insert(subCategory);
-                    unitOfWork.Save();
-                    return RedirectToAction("Index");
+                    var category = unitOfWork.CategoryRepository.Get((cat) => cat.Name == categoriesList).FirstOrDefault();
+                    if (category != null)
+                    {
+                        subCategory.Category = category;
+                        subCategory.Created_Date = DateTime.Now;
+                        unitOfWork.SubCategoryRepository.Insert(subCategory);
+                        unitOfWork.Save();
+                        return RedirectToAction("Index");
+                    }
                 }
             }
             catch (DataException)

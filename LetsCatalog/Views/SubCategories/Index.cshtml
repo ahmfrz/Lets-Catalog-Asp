@@ -7,7 +7,7 @@
 <h2>Index</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Create New", "Create", new { categoryId = Request.QueryString["categoryId"] })
 </p>
 <table class="table">
     <tr>
@@ -29,9 +29,9 @@
             @Html.DisplayFor(modelItem => item.Description)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.ID }) |
-            @Html.ActionLink("Details", "Details", new { id=item.ID }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.ID })
+            @Html.ActionLink("Edit", "Edit", new { categoryId = item.Category.ID, subcategoryId = item.ID }) |
+            @Html.ActionLink("Details", "Details", new { categoryId = item.Category.ID, subcategoryId = item.ID }) |
+            @Html.ActionLink("Delete", "Delete", new { categoryId = item.Category.ID, subcategoryId = item.ID })
         </td>
     </tr>
 }
