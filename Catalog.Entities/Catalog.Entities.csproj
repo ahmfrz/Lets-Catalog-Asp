@@ -56,6 +56,10 @@
     <Compile Include="Migrations\201801070734273_collection_update.Designer.cs">
       <DependentUpon>201801070734273_collection_update.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201801071120362_navigation_properties.cs" />
+    <Compile Include="Migrations\201801071120362_navigation_properties.Designer.cs">
+      <DependentUpon>201801071120362_navigation_properties.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="UnitOfWork.cs" />
     <Compile Include="Models\Brand.cs" />
@@ -80,6 +84,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201801070734273_collection_update.resx">
       <DependentUpon>201801070734273_collection_update.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201801071120362_navigation_properties.resx">
+      <DependentUpon>201801071120362_navigation_properties.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
