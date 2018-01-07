@@ -25,6 +25,11 @@ namespace Catalog.Models.Entities
         [DataType(DataType.ImageUrl)]
         public string Picture_URL { get; set; }
 
+        /// <summary>
+        ///
+        /// </summary>
+        public virtual Product Product { get; set; }
+
         ///// <summary>
         ///// The product id foreign key of the product picture
         ///// </summary>

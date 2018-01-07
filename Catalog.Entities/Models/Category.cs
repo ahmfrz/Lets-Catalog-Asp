@@ -40,6 +40,11 @@ namespace Catalog.Models.Entities
         /// </summary>
         public virtual ICollection<SubCategory> SubCategories { get; set; }
 
+        /// <summary>
+        ///
+        /// </summary>
+        public virtual User User { get; set; }
+
         ///// <summary>
         ///// The user id foreign key of the category
         ///// </summary>

@@ -1,13 +1,13 @@
 ﻿@model Catalog.Models.Entities.Category
 
 @{
-    ViewBag.Title = "EditCategory";
+    ViewBag.Title = "Edit Category";
 }
 
 <h2>EditCategory</h2>
 
 
-@using (Html.BeginForm("EditCategory", "Category"))
+@using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
 

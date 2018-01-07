@@ -49,6 +49,11 @@ namespace Catalog.Models.Entities
         /// </summary>
         public virtual ICollection<Brand> Brands { get; set; }
 
+        /// <summary>
+        ///
+        /// </summary>
+        public virtual Category Category { get; set; }
+
         ///// <summary>
         ///// The category id foreign key of the subcategory
         ///// </summary>

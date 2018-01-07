@@ -34,6 +34,11 @@ namespace Catalog.Models.Entities
         [ScaffoldColumn(false)]
         public DateTime Created_Date { get; set; }
 
+        /// <summary>
+        ///
+        /// </summary>
+        public virtual SubCategory SubCategory { get; set; }
+
         ///// <summary>
         ///// The subcategory id foreign key of the brand
         ///// </summary>

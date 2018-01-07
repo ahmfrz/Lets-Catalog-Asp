@@ -56,6 +56,11 @@ namespace Catalog.Models.Entities
         /// </summary>
         public virtual ICollection<ProductSpecs> ProductSpecs { get; set; }
 
+        /// <summary>
+        ///
+        /// </summary>
+        public virtual SubCategory SubCategory { get; set; }
+
         ///// <summary>
         ///// The subcategory id foreign key of the product
         ///// </summary>

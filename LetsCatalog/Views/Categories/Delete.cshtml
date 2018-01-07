@@ -1,7 +1,7 @@
 ﻿@model Catalog.Models.Entities.Category
 
 @{
-    ViewBag.Title = "DeleteCategory";
+    ViewBag.Title = "Delete Category";
 }
 
 <h2>DeleteCategory</h2>
@@ -21,7 +21,7 @@
 
     </dl>
 
-    @using (Html.BeginForm("DeleteCategoryConfirmed", "Category")) {
+    @using (Html.BeginForm()) {
         @Html.AntiForgeryToken()
         @Html.HiddenFor(model => model.ID)
 

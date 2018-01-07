@@ -2,11 +2,12 @@
 using Catalog.Models.Entities;
 using System;
 using System.Data;
+using System.Net;
 using System.Web.Mvc;
 
 namespace LetsCatalog.Controllers
 {
-    public class CategoryController : Controller
+    public class CategoriesController : Controller
     {
         /// <summary>
         /// Private member to hold injected instance
@@ -14,10 +15,10 @@ namespace LetsCatalog.Controllers
         private IUnitOfWork unitOfWork;
 
         /// <summary>
-        /// Creates a new instance of CategoryController
+        /// Creates a new instance of CategoriesController
         /// </summary>
         /// <param name="db">The injected db instance</param>
-        public CategoryController(IUnitOfWork unitOfWork)
+        public CategoriesController(IUnitOfWork unitOfWork)
         {
             this.unitOfWork = unitOfWork;
         }
@@ -35,7 +36,7 @@ namespace LetsCatalog.Controllers
         ///
         /// </summary>
         /// <returns></returns>
-        public ActionResult CreateCategory()
+        public ActionResult Create()
         {
             return View();
         }
@@ -47,21 +48,24 @@ namespace LetsCatalog.Controllers
         /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public RedirectToRouteResult CreateCategory(Category category)
+        public ActionResult Create([Bind(Include = "ID,Name,Created_Date")] Category category)
         {
             try
             {
-                category.Created_Date = DateTime.Now;
-                unitOfWork.CategoryRepository.Insert(category);
-                unitOfWork.Save();
-                return RedirectToAction("Index");
+                if (ModelState.IsValid)
+                {
+                    category.Created_Date = DateTime.Now;
+                    unitOfWork.CategoryRepository.Insert(category);
+                    unitOfWork.Save();
+                    return RedirectToAction("Index");
+                }
             }
             catch (DataException)
             {
                 ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists, see your system administrator.");
             }
 
-            return RedirectToAction("Create", category);
+            return View(category);
         }
 
         /// <summary>
@@ -69,8 +73,13 @@ namespace LetsCatalog.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public ActionResult EditCategory(int id)
+        public ActionResult Edit(int? id)
         {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
             var category = unitOfWork.CategoryRepository.GetByID(id);
             if (category == null)
             {
@@ -87,7 +96,7 @@ namespace LetsCatalog.Controllers
         /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public RedirectToRouteResult EditCategory(Category category)
+        public ActionResult Edit([Bind(Include = "ID,Name,Created_Date")] Category category)
         {
             try
             {
@@ -103,7 +112,7 @@ namespace LetsCatalog.Controllers
                 ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists, see your system administrator.");
             }
 
-            return RedirectToAction("EditCategory", new { category.ID });
+            return View(category);
         }
 
         /// <summary>
@@ -111,9 +120,15 @@ namespace LetsCatalog.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public ActionResult DeleteCategory(int id)
+        public ActionResult Delete(int? id)
         {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
             var category = unitOfWork.CategoryRepository.GetByID(id);
+
             if (category == null)
             {
                 return HttpNotFound();
@@ -127,9 +142,9 @@ namespace LetsCatalog.Controllers
         /// </summary>
         /// <param name="category"></param>
         /// <returns></returns>
-        [HttpPost]
+        [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public RedirectToRouteResult DeleteCategoryConfirmed(Category category)
+        public RedirectToRouteResult DeleteConfirmed(Category category)
         {
             unitOfWork.CategoryRepository.Delete(category);
             unitOfWork.Save();
@@ -141,9 +156,9 @@ namespace LetsCatalog.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public RedirectToRouteResult CategoryDetails(int id)
+        public RedirectToRouteResult Details(int id)
         {
-            return RedirectToAction("Index", "SubCategory");
+            return RedirectToAction("Index", "SubCategories", new { categoryId = id });
         }
 
         /// <summary>

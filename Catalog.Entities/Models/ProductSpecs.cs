@@ -24,6 +24,11 @@ namespace Catalog.Models.Entities
         /// </summary>
         public Colors Color { get; set; }
 
+        /// <summary>
+        ///
+        /// </summary>
+        public virtual Product Product { get; set; }
+
         ///// <summary>
         ///// The foreign key of the product specification
         ///// </summary>
