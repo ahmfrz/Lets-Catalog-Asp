@@ -1,8 +1,8 @@
 using Catalog.Entities;
-using LetsCatalog.Infrastructure;
 using StructureMap;
 
-namespace LetsCatalog {
+namespace LetsCatalog
+{
     public static class IoC {
         public static IContainer Initialize() {
             ObjectFactory.Initialize(x =>
@@ -14,7 +14,7 @@ namespace LetsCatalog {
                                     });
                             //                x.For<IExample>().Use<Example>();
 
-                            x.For<ICatalogDataSource>().Use<CatalogDb>();
+                            x.For<IUnitOfWork>().Use<UnitOfWork>();
                         });
             return ObjectFactory.Container;
         }

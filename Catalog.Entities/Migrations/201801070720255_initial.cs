@@ -1,14 +1,14 @@
-namespace LetsCatalog.Migrations
+namespace Catalog.Entities.Migrations
 {
     using System;
     using System.Data.Entity.Migrations;
-
-    public partial class InitialCreate : DbMigration
+    
+    public partial class initial : DbMigration
     {
         public override void Up()
         {
             CreateTable(
-                "dbo.Brands",
+                "dbo.Brand",
                 c => new
                     {
                         Brand_Id = c.Int(nullable: false, identity: true),
@@ -18,11 +18,11 @@ namespace LetsCatalog.Migrations
                         SubCategory_SubCateogy_Id = c.Int(nullable: false),
                     })
                 .PrimaryKey(t => t.Brand_Id)
-                .ForeignKey("dbo.SubCategories", t => t.SubCategory_SubCateogy_Id, cascadeDelete: false)
+                .ForeignKey("dbo.SubCategory", t => t.SubCategory_SubCateogy_Id, cascadeDelete: true)
                 .Index(t => t.SubCategory_SubCateogy_Id);
-
+            
             CreateTable(
-                "dbo.SubCategories",
+                "dbo.SubCategory",
                 c => new
                     {
                         SubCateogy_Id = c.Int(nullable: false, identity: true),
@@ -32,11 +32,11 @@ namespace LetsCatalog.Migrations
                         Category_Id = c.Int(nullable: false),
                     })
                 .PrimaryKey(t => t.SubCateogy_Id)
-                .ForeignKey("dbo.Categories", t => t.Category_Id, cascadeDelete: true)
+                .ForeignKey("dbo.Category", t => t.Category_Id, cascadeDelete: true)
                 .Index(t => t.Category_Id);
-
+            
             CreateTable(
-                "dbo.Categories",
+                "dbo.Category",
                 c => new
                     {
                         Category_Id = c.Int(nullable: false, identity: true),
@@ -45,11 +45,11 @@ namespace LetsCatalog.Migrations
                         User_Id = c.Int(nullable: false),
                     })
                 .PrimaryKey(t => t.Category_Id)
-                .ForeignKey("dbo.Users", t => t.User_Id, cascadeDelete: true)
+                .ForeignKey("dbo.User", t => t.User_Id, cascadeDelete: true)
                 .Index(t => t.User_Id);
-
+            
             CreateTable(
-                "dbo.Users",
+                "dbo.User",
                 c => new
                     {
                         User_Id = c.Int(nullable: false, identity: true),
@@ -58,7 +58,7 @@ namespace LetsCatalog.Migrations
                         Picture_URL = c.String(),
                     })
                 .PrimaryKey(t => t.User_Id);
-
+            
             CreateTable(
                 "dbo.ProductPics",
                 c => new
@@ -68,11 +68,11 @@ namespace LetsCatalog.Migrations
                         Product_Id = c.Int(nullable: false),
                     })
                 .PrimaryKey(t => t.Picture_id)
-                .ForeignKey("dbo.Products", t => t.Product_Id, cascadeDelete: true)
+                .ForeignKey("dbo.Product", t => t.Product_Id, cascadeDelete: true)
                 .Index(t => t.Product_Id);
-
+            
             CreateTable(
-                "dbo.Products",
+                "dbo.Product",
                 c => new
                     {
                         Product_Id = c.Int(nullable: false, identity: true),
@@ -84,11 +84,11 @@ namespace LetsCatalog.Migrations
                         SubCategory_SubCateogy_Id = c.Int(nullable: false),
                     })
                 .PrimaryKey(t => t.Product_Id)
-                .ForeignKey("dbo.Brands", t => t.Brand_Id, cascadeDelete: true)
-                .ForeignKey("dbo.SubCategories", t => t.SubCategory_SubCateogy_Id, cascadeDelete: false)
+                .ForeignKey("dbo.Brand", t => t.Brand_Id, cascadeDelete: true)
+                .ForeignKey("dbo.SubCategory", t => t.SubCategory_SubCateogy_Id, cascadeDelete: true)
                 .Index(t => t.Brand_Id)
                 .Index(t => t.SubCategory_SubCateogy_Id);
-
+            
             CreateTable(
                 "dbo.ProductSpecs",
                 c => new
@@ -98,34 +98,34 @@ namespace LetsCatalog.Migrations
                         Product_Id = c.Int(nullable: false),
                     })
                 .PrimaryKey(t => t.Spec_Id)
-                .ForeignKey("dbo.Products", t => t.Product_Id, cascadeDelete: true)
+                .ForeignKey("dbo.Product", t => t.Product_Id, cascadeDelete: true)
                 .Index(t => t.Product_Id);
-
+            
         }
-
+        
         public override void Down()
         {
-            DropForeignKey("dbo.ProductSpecs", "Product_Id", "dbo.Products");
-            DropForeignKey("dbo.ProductPics", "Product_Id", "dbo.Products");
-            DropForeignKey("dbo.Products", "SubCategory_SubCateogy_Id", "dbo.SubCategories");
-            DropForeignKey("dbo.Products", "Brand_Id", "dbo.Brands");
-            DropForeignKey("dbo.Brands", "SubCategory_SubCateogy_Id", "dbo.SubCategories");
-            DropForeignKey("dbo.SubCategories", "Category_Id", "dbo.Categories");
-            DropForeignKey("dbo.Categories", "User_Id", "dbo.Users");
+            DropForeignKey("dbo.ProductSpecs", "Product_Id", "dbo.Product");
+            DropForeignKey("dbo.ProductPics", "Product_Id", "dbo.Product");
+            DropForeignKey("dbo.Product", "SubCategory_SubCateogy_Id", "dbo.SubCategory");
+            DropForeignKey("dbo.Product", "Brand_Id", "dbo.Brand");
+            DropForeignKey("dbo.Brand", "SubCategory_SubCateogy_Id", "dbo.SubCategory");
+            DropForeignKey("dbo.SubCategory", "Category_Id", "dbo.Category");
+            DropForeignKey("dbo.Category", "User_Id", "dbo.User");
             DropIndex("dbo.ProductSpecs", new[] { "Product_Id" });
-            DropIndex("dbo.Products", new[] { "SubCategory_SubCateogy_Id" });
-            DropIndex("dbo.Products", new[] { "Brand_Id" });
+            DropIndex("dbo.Product", new[] { "SubCategory_SubCateogy_Id" });
+            DropIndex("dbo.Product", new[] { "Brand_Id" });
             DropIndex("dbo.ProductPics", new[] { "Product_Id" });
-            DropIndex("dbo.Categories", new[] { "User_Id" });
-            DropIndex("dbo.SubCategories", new[] { "Category_Id" });
-            DropIndex("dbo.Brands", new[] { "SubCategory_SubCateogy_Id" });
+            DropIndex("dbo.Category", new[] { "User_Id" });
+            DropIndex("dbo.SubCategory", new[] { "Category_Id" });
+            DropIndex("dbo.Brand", new[] { "SubCategory_SubCateogy_Id" });
             DropTable("dbo.ProductSpecs");
-            DropTable("dbo.Products");
+            DropTable("dbo.Product");
             DropTable("dbo.ProductPics");
-            DropTable("dbo.Users");
-            DropTable("dbo.Categories");
-            DropTable("dbo.SubCategories");
-            DropTable("dbo.Brands");
+            DropTable("dbo.User");
+            DropTable("dbo.Category");
+            DropTable("dbo.SubCategory");
+            DropTable("dbo.Brand");
         }
     }
 }

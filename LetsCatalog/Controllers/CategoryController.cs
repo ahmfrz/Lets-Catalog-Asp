@@ -1,8 +1,4 @@
-﻿using LetsCatalog.Infrastructure;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using Catalog.Entities;
 using System.Web.Mvc;
 
 namespace LetsCatalog.Controllers
@@ -12,15 +8,15 @@ namespace LetsCatalog.Controllers
         /// <summary>
         /// Private member to hold injected instance
         /// </summary>
-        private CatalogDb _db;
+        private IUnitOfWork unitOfWork;
 
         /// <summary>
         /// Creates a new instance of CategoryController
         /// </summary>
         /// <param name="db">The injected db instance</param>
-        public CategoryController(CatalogDb db)
+        public CategoryController(IUnitOfWork unitOfWork)
         {
-            this._db = db;
+            this.unitOfWork = unitOfWork;
         }
 
         /// <summary>
@@ -29,7 +25,7 @@ namespace LetsCatalog.Controllers
         /// <returns>The category index view</returns>
         public ActionResult Index()
         {
-            return View(_db.Categories.AsEnumerable());
+            return View(unitOfWork.CategoryRepository.Get());
         }
 
         public ActionResult Create()
