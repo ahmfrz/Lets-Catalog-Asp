@@ -1,12 +1,14 @@
 ﻿using Catalog.Entities;
 using Catalog.Models.Entities;
-using System;
+using LetsCatalog.Filters;
+using System.Linq;
 using System.Data;
 using System.Net;
 using System.Web.Mvc;
 
 namespace LetsCatalog.Controllers
 {
+    [LoggingFilter]
     public class CategoriesController : Controller
     {
         #region Private Members
@@ -34,7 +36,8 @@ namespace LetsCatalog.Controllers
         /// <returns>The category index view</returns>
         public ActionResult Index()
         {
-            return View(unitOfWork.CategoryRepository.Get());
+            var categories = unitOfWork.CategoryRepository.Get(orderBy: cat => cat.OrderByDescending(c => c.Created_Date));
+            return View(categories);
         }
 
         /// <summary>
@@ -53,13 +56,13 @@ namespace LetsCatalog.Controllers
         /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [AutoTimeFilter]
         public ActionResult Create([Bind(Include = "ID,Name,Created_Date")] Category category)
         {
             try
             {
                 if (ModelState.IsValid)
                 {
-                    category.Created_Date = DateTime.Now;
                     unitOfWork.CategoryRepository.Insert(category);
                     unitOfWork.Save();
                     return RedirectToAction("Index");

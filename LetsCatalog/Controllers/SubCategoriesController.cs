@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using Catalog.Entities;
 using Catalog.Models.Entities;
+using LetsCatalog.Filters;
 
 namespace LetsCatalog.Controllers
 {
@@ -38,7 +39,9 @@ namespace LetsCatalog.Controllers
         /// <returns></returns>
         public ActionResult Index(int? categoryId)
         {
-            var subcategories = unitOfWork.SubCategoryRepository.Get((sub) => sub.Category.ID == categoryId);
+            var subcategories = unitOfWork.SubCategoryRepository.Get(
+                (sub) => sub.Category.ID == categoryId,
+                (sub) => sub.OrderByDescending(s => s.Created_Date));
 
             if (subcategories == null)
             {
@@ -76,6 +79,7 @@ namespace LetsCatalog.Controllers
         /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [AutoTimeFilter]
         public ActionResult Create([Bind(Include = "ID,Name,Description,Created_Date")] SubCategory subCategory, string categoriesList)
         {
             try
@@ -86,7 +90,6 @@ namespace LetsCatalog.Controllers
                     if (category != null)
                     {
                         subCategory.Category = category;
-                        subCategory.Created_Date = DateTime.Now;
                         unitOfWork.SubCategoryRepository.Insert(subCategory);
                         unitOfWork.Save();
                         return RedirectToAction("Index", new { categoryId = category.ID });

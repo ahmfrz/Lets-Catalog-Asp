@@ -41,6 +41,11 @@ namespace Catalog.Entities
         /// The users table
         /// </summary>
         public DbSet<User> Users { get; set; }
+
+        /// <summary>
+        /// The action logs
+        /// </summary>
+        public DbSet<ActionLog> Logs { get; set; }
         #endregion
 
         #region Public Methods

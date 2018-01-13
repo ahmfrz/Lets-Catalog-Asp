@@ -16,6 +16,7 @@ namespace Catalog.Entities
         GenericRepository<Product> ProductRepository { get; }
         GenericRepository<ProductPics> ProductPicsRepository { get; }
         GenericRepository<ProductSpecs> ProductSpecsRepository { get; }
+        GenericRepository<ActionLog> ActionLogsRepository { get; }
 
         void Save();
     }

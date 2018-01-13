@@ -57,6 +57,11 @@ namespace Catalog.Entities
         /// The product specifications repository
         /// </summary>
         private GenericRepository<ProductSpecs> productSpecsRepository;
+
+        /// <summary>
+        /// The action logs repository
+        /// </summary>
+        private GenericRepository<ActionLog> actionLogsRepository;
         #endregion
 
         #region Constructor
@@ -179,6 +184,22 @@ namespace Catalog.Entities
                 }
 
                 return productSpecsRepository;
+            }
+        }
+
+        /// <summary>
+        /// Gets the action logs repository
+        /// </summary>
+        public GenericRepository<ActionLog> ActionLogsRepository
+        {
+            get
+            {
+                if (actionLogsRepository == null)
+                {
+                    actionLogsRepository = new GenericRepository<ActionLog>(context);
+                }
+
+                return actionLogsRepository;
             }
         }
         #endregion
