@@ -13,11 +13,14 @@ namespace LetsCatalog.Controllers
 {
     public class SubCategoriesController : Controller
     {
+        #region Private Members
         /// <summary>
         /// Private member to hold injected instance
         /// </summary>
         private IUnitOfWork unitOfWork;
+        #endregion
 
+        #region Constructors
         /// <summary>
         /// Creates a new instance of SubCategoriesController
         /// </summary>
@@ -26,7 +29,9 @@ namespace LetsCatalog.Controllers
         {
             this.unitOfWork = unitOfWork;
         }
+        #endregion
 
+        #region Controller Methods
         /// <summary>
         ///
         /// </summary>
@@ -165,7 +170,9 @@ namespace LetsCatalog.Controllers
             unitOfWork.Save();
             return RedirectToAction("Index", new { categoryId = categoryId });
         }
+        #endregion
 
+        #region IDisposable
         /// <summary>
         ///
         /// </summary>
@@ -175,6 +182,7 @@ namespace LetsCatalog.Controllers
             unitOfWork.Dispose();
             base.Dispose(disposing);
         }
+        #endregion
 
         #region Private Methods
         /// <summary>
@@ -197,16 +205,6 @@ namespace LetsCatalog.Controllers
             }
 
             return View(subcategory);
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        private SubCategory GetSubCategory(int id)
-        {
-            return unitOfWork.SubCategoryRepository.GetByID(id);
         }
         #endregion
     }
