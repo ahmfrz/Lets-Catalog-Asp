@@ -9,11 +9,14 @@ namespace LetsCatalog.Controllers
 {
     public class CategoriesController : Controller
     {
+        #region Private Members
         /// <summary>
         /// Private member to hold injected instance
         /// </summary>
         private IUnitOfWork unitOfWork;
+        #endregion
 
+        #region Constructors
         /// <summary>
         /// Creates a new instance of CategoriesController
         /// </summary>
@@ -22,7 +25,9 @@ namespace LetsCatalog.Controllers
         {
             this.unitOfWork = unitOfWork;
         }
+        #endregion
 
+        #region Controller Methods
         /// <summary>
         /// Gets the default category view
         /// </summary>
@@ -160,7 +165,9 @@ namespace LetsCatalog.Controllers
         {
             return RedirectToAction("Index", "SubCategories", new { categoryId = id });
         }
+        #endregion
 
+        #region IDisposable
         /// <summary>
         ///
         /// </summary>
@@ -170,5 +177,6 @@ namespace LetsCatalog.Controllers
             unitOfWork.Dispose();
             base.Dispose(disposing);
         }
+        #endregion
     }
 }
