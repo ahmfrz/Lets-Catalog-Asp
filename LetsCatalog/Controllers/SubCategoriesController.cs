@@ -50,19 +50,7 @@ namespace LetsCatalog.Controllers
         /// <returns></returns>
         public ActionResult Details(int? categoryId, int? subcategoryId)
         {
-            if (categoryId == null || subcategoryId == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-
-            var subcategory = unitOfWork.SubCategoryRepository.GetByID(subcategoryId);
-
-            if (subcategory == null || subcategory.Category.ID != categoryId)
-            {
-                return HttpNotFound();
-            }
-
-            return View(subcategory);
+            return GetValidatedView(categoryId, subcategoryId);
         }
 
         /// <summary>
@@ -96,7 +84,7 @@ namespace LetsCatalog.Controllers
                         subCategory.Created_Date = DateTime.Now;
                         unitOfWork.SubCategoryRepository.Insert(subCategory);
                         unitOfWork.Save();
-                        return RedirectToAction("Index");
+                        return RedirectToAction("Index", new { categoryId = category.ID });
                     }
                 }
             }
@@ -113,21 +101,11 @@ namespace LetsCatalog.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public ActionResult Edit(int? id)
+        public ActionResult Edit(int? categoryId, int? subcategoryId)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-
-            SubCategory subCategory = unitOfWork.SubCategoryRepository.GetByID(id);
-
-            if (subCategory == null)
-            {
-                return HttpNotFound();
-            }
-
-            return View(subCategory);
+            TempData["CurrentCategory"] = unitOfWork.CategoryRepository.GetByID(categoryId);
+            TempData["Categories"] = unitOfWork.CategoryRepository.Get();
+            return GetValidatedView(categoryId, subcategoryId);
         }
 
         /// <summary>
@@ -137,15 +115,23 @@ namespace LetsCatalog.Controllers
         /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID,Name,Description,Created_Date")] SubCategory subCategory)
+        public ActionResult Edit([Bind(Include = "ID,Name,Description,Created_Date")] SubCategory subCategory, string categoriesList)
         {
+            int categoryId = 0, subcategoryId = 0;
             try
             {
                 if (ModelState.IsValid)
                 {
-                    unitOfWork.SubCategoryRepository.Update(subCategory);
-                    unitOfWork.Save();
-                    return RedirectToAction("Index");
+                    var category = unitOfWork.CategoryRepository.Get((cat) => cat.Name == categoriesList).FirstOrDefault();
+                    if (category != null)
+                    {
+                        categoryId = category.ID;
+                        subcategoryId = subCategory.ID;
+                        subCategory.Category = category;
+                        unitOfWork.SubCategoryRepository.Update(subCategory);
+                        unitOfWork.Save();
+                        return RedirectToAction("Index", new { categoryId = categoryId });
+                    }
                 }
             }
             catch (DataException)
@@ -153,7 +139,7 @@ namespace LetsCatalog.Controllers
                 ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists, see your system administrator.");
             }
 
-            return View(subCategory);
+            return RedirectToAction("Edit", new { categoryId = categoryId, subcategoryId = subcategoryId });
         }
 
         /// <summary>
@@ -161,20 +147,9 @@ namespace LetsCatalog.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public ActionResult Delete(int? id)
+        public ActionResult Delete(int? categoryId, int? subcategoryId)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-
-            SubCategory subCategory = unitOfWork.SubCategoryRepository.GetByID(id);
-            if (subCategory == null)
-            {
-                return HttpNotFound();
-            }
-
-            return View(subCategory);
+            return GetValidatedView(categoryId, subcategoryId);
         }
 
         /// <summary>
@@ -184,11 +159,11 @@ namespace LetsCatalog.Controllers
         /// <returns></returns>
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
+        public ActionResult DeleteConfirmed(int? categoryId, int? subcategoryId)
         {
-            unitOfWork.SubCategoryRepository.Delete(id);
+            unitOfWork.SubCategoryRepository.Delete(subcategoryId);
             unitOfWork.Save();
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", new { categoryId = categoryId });
         }
 
         /// <summary>
@@ -201,14 +176,27 @@ namespace LetsCatalog.Controllers
             base.Dispose(disposing);
         }
 
+        #region Private Methods
         /// <summary>
         ///
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        private Category GetCategory(int id)
+        private ActionResult GetValidatedView(int? categoryId, int? subcategoryId)
         {
-            return unitOfWork.CategoryRepository.GetByID(id);
+            if (categoryId == null || subcategoryId == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            var subcategory = unitOfWork.SubCategoryRepository.GetByID(subcategoryId);
+
+            if (subcategory == null || subcategory.Category.ID != categoryId)
+            {
+                return HttpNotFound();
+            }
+
+            return View(subcategory);
         }
 
         /// <summary>
@@ -220,5 +208,6 @@ namespace LetsCatalog.Controllers
         {
             return unitOfWork.SubCategoryRepository.GetByID(id);
         }
+        #endregion
     }
 }
