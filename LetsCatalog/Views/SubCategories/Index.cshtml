@@ -24,7 +24,6 @@
     <tr>
         <td>
             @Html.ActionLink(item.Name, "ShowProduct", new { categoryId = item.Category.ID, subcategoryId = item.ID }) |
-            @Html.DisplayFor(modelItem => item.Name)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Description)

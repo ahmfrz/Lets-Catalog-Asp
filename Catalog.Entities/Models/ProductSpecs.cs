@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using CommonUtilities;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Catalog.Models.Entities
 {
@@ -16,31 +17,18 @@ namespace Catalog.Models.Entities
         /// <summary>
         /// The primary key of product specification
         /// </summary>
-        [Key]
-        public int ID { get; set; }
+        [Key, ForeignKey("Product")]
+        public int ProductID { get; set; }
 
         /// <summary>
         /// The color of the product
         /// </summary>
+        [Display(Name ="Color")]
         public Colors Color { get; set; }
 
         /// <summary>
         ///
         /// </summary>
         public virtual Product Product { get; set; }
-
-        ///// <summary>
-        ///// The foreign key of the product specification
-        ///// </summary>
-        //[Required]
-        //[ScaffoldColumn(false)]
-        //public int Product_Id { get; set; }
-
-        ///// <summary>
-        ///// The product of the product specification
-        ///// </summary>
-        //[Required]
-        //[ScaffoldColumn(false)]
-        //public Product Product { get; set; }
     }
 }

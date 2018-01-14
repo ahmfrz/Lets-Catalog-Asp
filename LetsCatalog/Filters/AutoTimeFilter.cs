@@ -21,13 +21,18 @@ namespace LetsCatalog.Filters
             {
                 (temp as Category).Created_Date = DateTime.Now;
             }
-            else if(filterContext.ActionParameters.TryGetValue("subCategory", out temp))
+            else if (filterContext.ActionParameters.TryGetValue("subCategory", out temp))
             {
                 (temp as SubCategory).Created_Date = DateTime.Now;
             }
-            else if(filterContext.ActionParameters.TryGetValue("product", out temp))
+            else if (filterContext.ActionParameters.TryGetValue("product", out temp))
             {
-                (temp as Product).Created_Date = DateTime.Now;
+                var product = temp as Product;
+                product.Created_Date = DateTime.Now;
+                if (product.Brand != null)
+                {
+                    product.Brand.Created_Date = DateTime.Now;
+                }
             }
         }
         #endregion

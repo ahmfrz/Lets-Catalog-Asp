@@ -74,8 +74,10 @@ namespace LetsCatalog.Controllers
         ///
         /// </summary>
         /// <returns></returns>
-        public ActionResult Create()
+        public ActionResult Create(int? categoryId, int? subcategoryId)
         {
+            TempData["CurrentSubCategory"] = unitOfWork.SubCategoryRepository.Get(sub => sub.ID == subcategoryId && sub.Category.ID == categoryId);
+            TempData["SubCategories"] = unitOfWork.SubCategoryRepository.Get();
             return View();
         }
 
@@ -87,7 +89,7 @@ namespace LetsCatalog.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [AutoTimeFilter]
-        public ActionResult Create([Bind(Include = "ID,Name,Description,Created_Date")] Product product, string subcategoriesList)
+        public ActionResult Create([Bind(Include = "ID,Name,Description,Created_Date,Brand,ProductSpecs,ProductPics")] Product product, string subcategoriesList)
         {
             try
             {
@@ -97,6 +99,19 @@ namespace LetsCatalog.Controllers
                     if (subcategory != null)
                     {
                         product.SubCategory = subcategory;
+                        product.ProductPics.Product = product;
+                        product.ProductSpecs.Product = product;
+                        var brand = subcategory.Brands.FirstOrDefault(b => b.Name == product.Brand.Name);
+                        if(brand == null)
+                        {
+                            product.Brand.SubCategory = subcategory;
+                        }
+                        else
+                        {
+                            brand.SubCategory = subcategory;
+                            unitOfWork.BrandRepository.Update(brand);
+                        }
+
                         unitOfWork.ProductRepository.Insert(product);
                         unitOfWork.Save();
                         return RedirectToAction("Index", new { categoryId = subcategory.Category.ID, subcategoryId = subcategory.ID });
@@ -108,6 +123,8 @@ namespace LetsCatalog.Controllers
                 ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists, see your system administrator.");
             }
 
+            TempData["CurrentSubCategory"] = unitOfWork.SubCategoryRepository.Get(sub => sub.Name == subcategoriesList);
+            TempData["SubCategories"] = unitOfWork.SubCategoryRepository.Get();
             return View(product);
         }
 
@@ -120,6 +137,8 @@ namespace LetsCatalog.Controllers
         /// <returns></returns>
         public ActionResult Edit(int? categoryId, int? subcategoryId, int? productId)
         {
+            TempData["CurrentSubCategory"] = unitOfWork.SubCategoryRepository.Get(sub => sub.ID == subcategoryId && sub.Category.ID == categoryId);
+            TempData["SubCategories"] = unitOfWork.SubCategoryRepository.Get();
             return GetValidatedView(categoryId, subcategoryId, productId);
         }
 
@@ -142,7 +161,7 @@ namespace LetsCatalog.Controllers
                     {
                         categoryId = subcategory.Category.ID;
                         subcategoryId = subcategory.ID;
-                        productId = product.ID;
+                        productId = product.ProductID;
                         product.SubCategory = subcategory;
                         unitOfWork.ProductRepository.Update(product);
                         unitOfWork.Save();

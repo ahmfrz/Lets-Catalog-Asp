@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,8 +16,8 @@ namespace Catalog.Models.Entities
         /// <summary>
         /// The primary key of the product picture
         /// </summary>
-        [Key]
-        public int ID { get; set; }
+        [Key, ForeignKey("Product")]
+        public int ProductID { get; set; }
 
         /// <summary>
         /// The picture url of the product picture
@@ -29,19 +30,5 @@ namespace Catalog.Models.Entities
         ///
         /// </summary>
         public virtual Product Product { get; set; }
-
-        ///// <summary>
-        ///// The product id foreign key of the product picture
-        ///// </summary>
-        //[Required]
-        //[ScaffoldColumn(false)]
-        //public int Product_Id { get; set; }
-
-        ///// <summary>
-        ///// The product of the product picture
-        ///// </summary>
-        //[Required]
-        //[ScaffoldColumn(false)]
-        //public Product Product { get; set; }
     }
 }

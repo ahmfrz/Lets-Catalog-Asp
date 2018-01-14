@@ -7,7 +7,7 @@
 <h2>Index</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Create New", "Create", new { categoryId = Request.RequestContext.RouteData.Values["categoryId"], subcategoryId = Request.RequestContext.RouteData.Values["subcategoryId"] })
 </p>
 <table class="table">
     <tr>
@@ -16,6 +16,12 @@
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Description)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ProductPics.Picture_URL)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ProductSpecs.Color)
         </th>
         <th></th>
     </tr>
@@ -29,9 +35,15 @@
             @Html.DisplayFor(modelItem => item.Description)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.ID }) |
-            @Html.ActionLink("Details", "Details", new { id=item.ID }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.ID })
+            @Html.DisplayFor(modelItem => item.ProductPics.Picture_URL)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ProductSpecs.Color)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { categoryId = item.SubCategory.Category.ID, subcategoryId = item.SubCategory.ID, productId = item.ProductID }) |
+            @Html.ActionLink("Details", "Details", new { categoryId = item.SubCategory.Category.ID, subcategoryId = item.SubCategory.ID, productId=item.ProductID }) |
+            @Html.ActionLink("Delete", "Delete", new { categoryId = item.SubCategory.Category.ID, subcategoryId = item.SubCategory.ID, productId = item.ProductID })
         </td>
     </tr>
 }

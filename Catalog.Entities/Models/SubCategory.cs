@@ -53,19 +53,5 @@ namespace Catalog.Models.Entities
         ///
         /// </summary>
         public virtual Category Category { get; set; }
-
-        ///// <summary>
-        ///// The category id foreign key of the subcategory
-        ///// </summary>
-        //[Required]
-        //[ScaffoldColumn(false)]
-        //public int Category_Id { get; set; }
-
-        ///// <summary>
-        ///// The category of the subcategory
-        ///// </summary>
-        //[Required]
-        //[ScaffoldColumn(false)]
-        //public Category Category { get; set; }
     }
 }

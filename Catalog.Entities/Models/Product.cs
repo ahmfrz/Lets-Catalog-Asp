@@ -17,7 +17,7 @@ namespace Catalog.Models.Entities
         /// The primary key of the product
         /// </summary>
         [Key]
-        public int ID { get; set; }
+        public int ProductID { get; set; }
 
         /// <summary>
         /// The name of the product
@@ -49,36 +49,16 @@ namespace Catalog.Models.Entities
         /// <summary>
         ///
         /// </summary>
-        public virtual ICollection<ProductPics> ProductPics { get; set; }
+        public virtual ProductPics ProductPics { get; set; }
 
         /// <summary>
         ///
         /// </summary>
-        public virtual ICollection<ProductSpecs> ProductSpecs { get; set; }
+        public virtual ProductSpecs ProductSpecs { get; set; }
 
         /// <summary>
         ///
         /// </summary>
         public virtual SubCategory SubCategory { get; set; }
-
-        ///// <summary>
-        ///// The subcategory id foreign key of the product
-        ///// </summary>
-        //[Required]
-        //[ScaffoldColumn(false)]
-        //public int SubCategory_Id { get; set; }
-
-        ///// <summary>
-        ///// The subcategory of the product
-        ///// </summary>
-        //[Required]
-        //public SubCategory SubCategory { get; set; }
-
-        ///// <summary>
-        ///// The brand id foreign key of the product
-        ///// </summary>
-        //[Required]
-        //[ScaffoldColumn(false)]
-        //public int Brand_Id { get; set; }
     }
 }

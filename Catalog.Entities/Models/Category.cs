@@ -44,19 +44,5 @@ namespace Catalog.Models.Entities
         ///
         /// </summary>
         public virtual User User { get; set; }
-
-        ///// <summary>
-        ///// The user id foreign key of the category
-        ///// </summary>
-        //[Required]
-        //[ScaffoldColumn(false)]
-        //public int User_Id { get; set; }
-
-        ///// <summary>
-        ///// The user who created the category
-        ///// </summary>
-        //[Required]
-        //[ScaffoldColumn(false)]
-        //public User User { get; set; }
     }
 }

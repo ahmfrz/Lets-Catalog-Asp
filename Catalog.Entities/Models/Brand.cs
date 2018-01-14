@@ -38,18 +38,5 @@ namespace Catalog.Models.Entities
         ///
         /// </summary>
         public virtual SubCategory SubCategory { get; set; }
-
-        ///// <summary>
-        ///// The subcategory id foreign key of the brand
-        ///// </summary>
-        //[Required]
-        //public int SubCategory_Id { get; set; }
-
-        ///// <summary>
-        ///// The subcategory of the brand
-        ///// </summary>
-        //[Required]
-        //[ScaffoldColumn(false)]
-        //public SubCategory SubCategory { get; set; }
     }
 }
