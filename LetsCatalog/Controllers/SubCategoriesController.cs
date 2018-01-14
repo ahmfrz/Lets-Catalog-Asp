@@ -169,9 +169,25 @@ namespace LetsCatalog.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int? categoryId, int? subcategoryId)
         {
-            unitOfWork.SubCategoryRepository.Delete(subcategoryId);
-            unitOfWork.Save();
+            var subcategory = unitOfWork.SubCategoryRepository.GetByID(subcategoryId);
+            if (subcategory == null || subcategory.ID != subcategoryId || subcategory.Category.ID != categoryId)
+            {
+                unitOfWork.SubCategoryRepository.Delete(subcategory);
+                unitOfWork.Save();
+            }
+
             return RedirectToAction("Index", new { categoryId = categoryId });
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="categoryId"></param>
+        /// <param name="subcategoryId"></param>
+        /// <returns></returns>
+        public ActionResult ShowProduct(int? categoryId, int? subcategoryId)
+        {
+            return RedirectToAction("ShowProducts", "Products", new { categoryId = categoryId, subcategoryId = subcategoryId });
         }
         #endregion
 
