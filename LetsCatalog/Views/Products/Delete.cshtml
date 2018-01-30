@@ -12,22 +12,6 @@
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.ProductPics.Picture_URL)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.ProductPics.Picture_URL)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.ProductSpecs.ProductID)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.ProductSpecs.ProductID)
-        </dd>
-
-        <dt>
             @Html.DisplayNameFor(model => model.Name)
         </dt>
 
@@ -43,6 +27,22 @@
             @Html.DisplayFor(model => model.Description)
         </dd>
 
+        <dt>
+            @Html.DisplayNameFor(model => model.ProductSpecs.Color)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ProductSpecs.Color)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ProductPics.Picture_URL)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ProductPics.Picture_URL)
+        </dd>
+
     </dl>
 
     @using (Html.BeginForm()) {
@@ -50,7 +50,7 @@
 
         <div class="form-actions no-color">
             <input type="submit" value="Delete" class="btn btn-default" /> |
-            @Html.ActionLink("Back to List", "Index")
+            @Html.ActionLink("Back to List", "ShowProducts", new { categoryId = Model?.SubCategory?.Category?.ID, subcategoryId = Model?.SubCategory?.ID })
         </div>
     }
 </div>

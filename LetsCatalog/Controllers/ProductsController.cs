@@ -76,7 +76,17 @@ namespace LetsCatalog.Controllers
         /// <returns></returns>
         public ActionResult Create(int? categoryId, int? subcategoryId)
         {
-            TempData["CurrentSubCategory"] = unitOfWork.SubCategoryRepository.Get(sub => sub.ID == subcategoryId && sub.Category.ID == categoryId);
+            if (subcategoryId == null || categoryId == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "Category ID and Subcategory ID are required");
+            }
+
+            TempData["CurrentSubCategory"] = unitOfWork.SubCategoryRepository.Get(sub => sub.ID == subcategoryId && sub.Category.ID == categoryId).FirstOrDefault();
+            if (TempData["CurrentSubCategory"] == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "Subcategory not found");
+            }
+
             TempData["SubCategories"] = unitOfWork.SubCategoryRepository.Get();
             return View();
         }
@@ -101,20 +111,14 @@ namespace LetsCatalog.Controllers
                         product.SubCategory = subcategory;
                         product.ProductPics.Product = product;
                         product.ProductSpecs.Product = product;
-                        var brand = subcategory.Brands.FirstOrDefault(b => b.Name == product.Brand.Name);
-                        if(brand == null)
-                        {
-                            product.Brand.SubCategory = subcategory;
-                        }
-                        else
-                        {
-                            brand.SubCategory = subcategory;
-                            unitOfWork.BrandRepository.Update(brand);
-                        }
-
+                        UpdateBrand(product, subcategory);
                         unitOfWork.ProductRepository.Insert(product);
                         unitOfWork.Save();
-                        return RedirectToAction("Index", new { categoryId = subcategory.Category.ID, subcategoryId = subcategory.ID });
+                        return RedirectToAction("ShowProducts", new { categoryId = subcategory.Category.ID, subcategoryId = subcategory.ID });
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("", "Subcategory not found");
                     }
                 }
             }
@@ -123,7 +127,7 @@ namespace LetsCatalog.Controllers
                 ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists, see your system administrator.");
             }
 
-            TempData["CurrentSubCategory"] = unitOfWork.SubCategoryRepository.Get(sub => sub.Name == subcategoriesList);
+            TempData["CurrentSubCategory"] = unitOfWork.SubCategoryRepository.Get(sub => sub.Name == subcategoriesList).FirstOrDefault();
             TempData["SubCategories"] = unitOfWork.SubCategoryRepository.Get();
             return View(product);
         }
@@ -137,8 +141,9 @@ namespace LetsCatalog.Controllers
         /// <returns></returns>
         public ActionResult Edit(int? categoryId, int? subcategoryId, int? productId)
         {
-            TempData["CurrentSubCategory"] = unitOfWork.SubCategoryRepository.Get(sub => sub.ID == subcategoryId && sub.Category.ID == categoryId);
-            TempData["SubCategories"] = unitOfWork.SubCategoryRepository.Get();
+            var sub = unitOfWork.SubCategoryRepository.Get(includeProperties: "Brands");
+            var selected = sub?.Where(s => s.ID == subcategoryId && s.Category.ID == categoryId).FirstOrDefault();
+            ViewBag.SubCategories = new SelectList(sub, "ID", "Name", selected?.Name);
             return GetValidatedView(categoryId, subcategoryId, productId);
         }
 
@@ -147,26 +152,41 @@ namespace LetsCatalog.Controllers
         /// </summary>
         /// <param name="product"></param>
         /// <returns></returns>
-        [HttpPost]
+        [HttpPost, ActionName("Edit")]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID,Name,Description,Created_Date")] Product product, string subcategoriesList)
+        //public ActionResult Edit([Bind(Include = "ProductID,Name,Description,Created_Date,Brand,ProductSpecs,ProductPics,SubCategory")] Product product)
+        public ActionResult EditPost(int? categoryId, int? subcategoryId, int? productId)
         {
-            int categoryId = 0, subcategoryId = 0, productId = 0;
+            //int categoryId = 0, subcategoryId = 0, productId = 0;
             try
             {
                 if (ModelState.IsValid)
                 {
-                    var subcategory = unitOfWork.SubCategoryRepository.Get((sub) => sub.Name == subcategoriesList).FirstOrDefault();
-                    if (subcategory != null)
+                    var productToUpdate = unitOfWork.ProductRepository.GetByID(productId);
+                    if (TryUpdateModel(productToUpdate, "",
+                            new string[] { "Name", "Description", "ProductSpecs", "ProductPics", "SubCategory" }))
                     {
-                        categoryId = subcategory.Category.ID;
-                        subcategoryId = subcategory.ID;
-                        productId = product.ProductID;
-                        product.SubCategory = subcategory;
-                        unitOfWork.ProductRepository.Update(product);
                         unitOfWork.Save();
-                        return RedirectToAction("Index", new { categoryId = categoryId, subcategoryId = subcategoryId });
                     }
+                    //var subcategory = unitOfWork.SubCategoryRepository.Get((s) => s.Name == product.SubCategory.Name).FirstOrDefault();
+                    //if (subcategory != null)
+                    //{
+                    //    categoryId = subcategory.Category.ID;
+                    //    subcategoryId = subcategory.ID;
+                    //    productId = product.ProductID;
+                    //    product.SubCategory = subcategory;
+                    //    UpdateBrand(product, subcategory);
+                    //    unitOfWork.BrandRepository.Update(product.Brand);
+                    //    unitOfWork.ProductRepository.Update(product);
+                    //    unitOfWork.ProductPicsRepository.Update(product.ProductPics);
+                    //    unitOfWork.ProductSpecsRepository.Update(product.ProductSpecs);
+                    //    unitOfWork.Save();
+                    //    return RedirectToAction("ShowProducts", new { categoryId = categoryId, subcategoryId = subcategoryId });
+                    //}
+                    //else
+                    //{
+                    //    return new HttpStatusCodeResult(HttpStatusCode.NotFound, "Subcategory not found");
+                    //}
                 }
             }
             catch (DataException)
@@ -174,7 +194,29 @@ namespace LetsCatalog.Controllers
                 ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists, see your system administrator.");
             }
 
+            var sub = unitOfWork.SubCategoryRepository.Get(includeProperties: "Brands");
+            var selected = sub?.Where(s => s.ID == subcategoryId && s.Category.ID == categoryId).FirstOrDefault();
+            ViewBag.SubCategories = new SelectList(sub, "ID", "Name", selected?.Name);
             return RedirectToAction("Edit", new { categoryId = categoryId, subcategoryId = subcategoryId, productId = productId });
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="product"></param>
+        /// <param name="subcategory"></param>
+        private void UpdateBrand(Product product, SubCategory subcategory)
+        {
+            var brand = subcategory?.Brands?.FirstOrDefault(b => b.Name == product.Brand.Name);
+            if (brand == null)
+            {
+                product.Brand.SubCategory = subcategory;
+            }
+            else
+            {
+                brand.SubCategory = subcategory;
+                unitOfWork.BrandRepository.Update(brand);
+            }
         }
 
         /// <summary>
@@ -197,13 +239,29 @@ namespace LetsCatalog.Controllers
         public ActionResult DeleteConfirmed(int? categoryId, int? subcategoryId, int? productId)
         {
             var product = unitOfWork.ProductRepository.GetByID(productId);
-            if (product == null || product.SubCategory.ID != subcategoryId || product.SubCategory.Category.ID != categoryId)
+            if (product != null || product.SubCategory.ID != subcategoryId || product.SubCategory.Category.ID != categoryId)
             {
+                var pics = unitOfWork.ProductPicsRepository.GetByID(product.ProductID);
+                var specs = unitOfWork.ProductSpecsRepository.GetByID(product.ProductID);
+                if (pics != null)
+                {
+                    unitOfWork.ProductPicsRepository.Delete(pics);
+                }
+
+                if (specs != null)
+                {
+                    unitOfWork.ProductSpecsRepository.Delete(specs);
+                }
+
                 unitOfWork.ProductRepository.Delete(product);
                 unitOfWork.Save();
             }
+            else
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.NotFound, "Product not found");
+            }
 
-            return RedirectToAction("Index", new { categoryId = categoryId, subcategoryId = subcategoryId });
+            return RedirectToAction("ShowProducts", new { categoryId = categoryId, subcategoryId = subcategoryId });
         }
         #endregion
 

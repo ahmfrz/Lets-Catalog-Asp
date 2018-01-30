@@ -7,7 +7,7 @@
 <h2>Index</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create", new { categoryId = Request.RequestContext.RouteData.Values["categoryId"], subcategoryId = Request.RequestContext.RouteData.Values["subcategoryId"] })
+    @Html.ActionLink("Create New", "Create", new { categoryId = Request.QueryString["categoryId"], subcategoryId = Request.QueryString["subcategoryId"] })
 </p>
 <table class="table">
     <tr>
